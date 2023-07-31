@@ -1,12 +1,9 @@
 import { fetchBreeds } from './cat-api.js';
 import { fetchCatByBreed } from './cat-api.js';
 import './loading.css';
-import SlimSelect from 'slim-select'
-
-import { Loading } from 'notiflix/build/notiflix-loading-aio';
 
 const pLoader = document.querySelector(".loader");
-pLoader.classList.add("loading")
+
 const pError = document.querySelector(".error");
 pError.classList.add("loading");
 
@@ -29,7 +26,7 @@ const options = {
 fetchBreeds()
 .then(data => {
   breedSelect.classList.add("loading");
-  Loading.standard('Loading data, please wait...');
+  pError.classList.add("loading");
   pLoader.classList.remove("loading");
   
   const markup = data.map((element) =>   
@@ -38,16 +35,11 @@ fetchBreeds()
   pLoader.classList.add("loading");    
 
   breedSelect.insertAdjacentHTML("afterbegin", markup);
-
-  // new SlimSelect({
-  //   select: breedSelect
-  // });
-
-  Loading.remove();  
-  breedSelect.classList.remove("loading")
+  breedSelect.classList.remove("loading");
 })
 .catch(error => {
-  pError.classList.remove("loading")
+  pError.classList.remove("loading");
+  catInfo.innerHTML = "";
 });
 
 
@@ -55,7 +47,7 @@ fetchBreeds()
 
 
 function getValue() {
-  
+  pError.classList.add("loading");
   catInfo.classList.add("loading")
   pLoader.classList.remove("loading");
   
@@ -81,16 +73,16 @@ function getValue() {
             <h2>Temperament</h2>
             <p>${dataBreed.temperament}</p>
           </div>`
-        )
-        
+        )        
       });          
             
     catInfo.insertAdjacentHTML("afterbegin", markup); 
     catInfo.classList.remove("loading")     
   })
   .catch(error => {
-    pError.classList.remove("loading")
-    pLoader.classList.add("loading")
+    pError.classList.remove("loading");
+    pLoader.classList.add("loading");
+    catInfo.innerHTML = "";
   });  
 };
 
